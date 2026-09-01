@@ -26,7 +26,7 @@
 
     <div class="loader"></div>
 
-    <div class="timer" id="timerDisplay">10:00</div>
+    <div class="timer" id="timerDisplay">05:00</div>
 
     <div class="warning">⚠️ DO NOT REFRESH. DO NOT GO BACK. DO NOT OPEN YOUR ID. This process is sensitive and must complete uninterrupted.</div>
 
@@ -36,7 +36,7 @@
 </div>
 
 <script>
-let seconds = 600; // 10 minutes
+let seconds = 300; // 5 minutes
 const timerDisplay = document.getElementById('timerDisplay');
 const statusMsg = document.getElementById('statusMsg');
 let timerInterval = setInterval(() => {
@@ -52,10 +52,9 @@ let timerInterval = setInterval(() => {
     const secs = seconds % 60;
     timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 
-    // Change status message at different stages
-    if (seconds > 480) statusMsg.textContent = '⏳ Initializing...';
-    else if (seconds > 300) statusMsg.textContent = '⏳ Processing diamond...';
-    else if (seconds > 120) statusMsg.textContent = '⏳ Almost done...';
+    if (seconds > 240) statusMsg.textContent = '⏳ Initializing...';
+    else if (seconds > 150) statusMsg.textContent = '⏳ Processing diamond...';
+    else if (seconds > 60) statusMsg.textContent = '⏳ Almost done...';
     else statusMsg.textContent = '⏳ Finalizing...';
 }, 1000);
 </script>
