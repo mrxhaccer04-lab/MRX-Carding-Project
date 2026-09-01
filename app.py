@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, jsonify
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import threading
-import time
 
 app = Flask(__name__)
 app.secret_key = 'mrx_super_secret_key'
@@ -13,7 +12,13 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 pending_emails = {}
 pending_otps = {}
-web_status = True
+web_status = True  # True = online, False = offline
+
+# ==================== WEBSITE OFF/ON CHECK ====================
+@app.before_request
+def check_status():
+    if not web_status and request.endpoint != 'static' and request.path != '/get_status':
+        return "🚫 Server is currently offline. Please try again later.", 503
 
 # ==================== BOT HANDLERS ====================
 
@@ -50,7 +55,7 @@ def sleep_cmd(msg):
     if msg.from_user.id == OWNER_ID:
         global web_status
         web_status = False
-        bot.reply_to(msg, "💤 Web server sleeping...")
+        bot.reply_to(msg, "💤 Web server is now OFFLINE.")
     else:
         bot.reply_to(msg, "❌ Unauthorized")
 
@@ -59,7 +64,7 @@ def wake_cmd(msg):
     if msg.from_user.id == OWNER_ID:
         global web_status
         web_status = True
-        bot.reply_to(msg, "🌐 Web server woke up!")
+        bot.reply_to(msg, "🌐 Web server is now ONLINE.")
     else:
         bot.reply_to(msg, "❌ Unauthorized")
 
