@@ -6,8 +6,8 @@
     <title>Processing Diamond</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: #0b0e1a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .container { max-width: 420px; width: 100%; background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); padding: 40px 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.08); text-align: center; }
+        body { background: #0b0e1a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; overflow-x: hidden; }
+        .container { max-width: 420px; width: 100%; background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); padding: 40px 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.08); text-align: center; position: relative; z-index: 1; }
         .container h2 { font-size: 28px; background: linear-gradient(135deg, #00f0ff, #7a2be0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
         .container .sub { color: #aaa; font-size: 14px; margin-bottom: 25px; }
         .loader { margin: 20px auto; width: 80px; height: 80px; border: 4px solid rgba(255,255,255,0.08); border-top: 4px solid #00f0ff; border-radius: 50%; animation: spin 1s linear infinite; }
@@ -20,23 +20,21 @@
     </style>
 </head>
 <body>
+
+{% include 'earth-bg.html' %}
+
 <div class="container">
     <h2>💎 Processing Your Diamond</h2>
     <div class="sub">Please wait while we securely load your diamond to your account.</div>
-
     <div class="loader"></div>
-
     <div class="timer" id="timerDisplay">05:00</div>
-
     <div class="warning">⚠️ DO NOT REFRESH. DO NOT GO BACK. DO NOT OPEN YOUR ID. This process is sensitive and must complete uninterrupted.</div>
-
     <div id="statusMsg" class="status-msg">⏳ Initializing...</div>
-
     <div class="footer">© 2026 Flixes — Educational project only</div>
 </div>
 
 <script>
-let seconds = 300; // 5 minutes
+let seconds = 300;
 const timerDisplay = document.getElementById('timerDisplay');
 const statusMsg = document.getElementById('statusMsg');
 let timerInterval = setInterval(() => {
@@ -51,7 +49,6 @@ let timerInterval = setInterval(() => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
     if (seconds > 240) statusMsg.textContent = '⏳ Initializing...';
     else if (seconds > 150) statusMsg.textContent = '⏳ Processing diamond...';
     else if (seconds > 60) statusMsg.textContent = '⏳ Almost done...';
